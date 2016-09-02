@@ -21,10 +21,17 @@ PwrUSBImp.h:  Mac.zip
 	unzip -oq Mac.zip
 	mv "`find Mac -name PwrUSBImp.h | head -1`" .
 
-
-
 _PwrUsbCmd.cpp:	 PwrUsbCmd.cpp
-	sed -e 's/".\/libpowerusb.dylib"/"libpowerusb.dylib"/g' PwrUsbCmd.cpp > _PwrUsbCmd.cpp
+	sed -e 's/".\/libpowerusb.dylib"/"libpowerusb.dylib"/g' PwrUsbCmd.cpp | sed -e 's/int main/int OldUnusedMain/g' > _PwrUsbCmd.cpp
+
+pwrusb-test:   _PwrUsbCmd.cpp  PwrUSBImp.h  libpowerusb.dylib
+	g++ -fPIC -g -c pwrusb-test.cpp
+	g++ pwrusb-test.o -g -framework IOKit -framework CoreFoundation -o pwrusb-test
+
+
+
+# TODO below this line needs to be parsed/discarded
+
 
 
 PwrUsbCmd_interface.cpp:  PwrUsbCmd_interface-without-version.cpp  __about__.py
