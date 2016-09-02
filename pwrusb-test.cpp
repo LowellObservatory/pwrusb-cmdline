@@ -18,13 +18,6 @@ extern int get_number_of_strips_attached()
     return MaxUnits;
 }
 
-int main(int argc, char* argv[])
-{
-    printf("Yippee yi yo.\n");
-    printf("Number of strips attached: %d\n", get_number_of_strips_attached());
-    return 0;
-}
-
 extern int get_total_current_milliamps(int bank)
 {
     int r1, current, i, MaxUnits, connected;
@@ -41,6 +34,15 @@ extern int get_total_current_milliamps(int bank)
     r1 = (*ReadCurrentPowerUSB_Address)(&current);						// Present current consumption reading in milli amps
     return current;
 }
+
+int main(int argc, char* argv[])
+{
+    printf("Yippee yi yo.\n");
+    printf("Number of strips attached: %d\n", get_number_of_strips_attached());
+    printf("Total current milliamps on bank 0: %d\n", get_total_current_milliamps(0));
+    return 0;
+}
+
 
 extern void get_outlet_states(int bank, int *outlet1, int *outlet2, int *outlet3)
 {

@@ -24,7 +24,7 @@ PwrUSBImp.h:  Mac.zip
 _PwrUsbCmd.cpp:	 PwrUsbCmd.cpp
 	sed -e 's/".\/libpowerusb.dylib"/"libpowerusb.dylib"/g' PwrUsbCmd.cpp | sed -e 's/int main/int OldUnusedMain/g' > _PwrUsbCmd.cpp
 
-pwrusb-test:   _PwrUsbCmd.cpp  PwrUSBImp.h  libpowerusb.dylib
+pwrusb-test:   _PwrUsbCmd.cpp  PwrUSBImp.h  libpowerusb.dylib  pwrusb-test.cpp
 	g++ -fPIC -g -c pwrusb-test.cpp
 	g++ pwrusb-test.o -g -framework IOKit -framework CoreFoundation -o pwrusb-test
 
