@@ -1,7 +1,9 @@
 pwrusb-cmdline.bbprojectd
 libpowerusb.dylib
 PwrUsbCmd.cpp
+_PwrUsbCmd.cpp
 PwrUSBImp.h
 Mac 
 Mac.zip
-
+*.o
+.DS_Store
