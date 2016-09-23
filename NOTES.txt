@@ -1,0 +1,13 @@
+
+screwing around trying to get things to work...
+
+
+    g++ -fPIC -Wall -g -c -framework IOKit -framework CoreFoundation PwrUsbCmd.cpp
+    g++ PwrUsbCmd.o -Wall -g -framework IOKit -framework CoreFoundation -o pwrusbcmd
+
+and can then control with, e.g.:
+
+    ./pwrusbcmd 1 0 1
+    
+(But, have not found way to get output directly from pwrusbcmd yet)
+
