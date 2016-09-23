@@ -23,12 +23,55 @@ From command line:
     
     make
     make install
+    
+This will install the executable (`pwrusb`) in `/usr/local/bin/` and the necessary library (`libpowerusb.dylib`) in `/usr/local/lib/'.
 
 ## Usage
 
 Example usage:
 
-    TK
+*Get status:*
+
+    pwrusb status
+
+returns, e.g. (where 0 means Off & 1 means On for outlets 1 2 3):
+
+    Outlet states on bank 0:
+        0  0  0
+
+*Set all 3 outlets individually:*
+
+    pwrusb set 0 1 0
+
+where 0 is Off & 1 (or anything other than 0) is On for outlets 1 2 3
+
+*Set all outlets to on/off together:*
+
+    pwrusb setall 0
+
+where 0 is Off & 1 (or anything other than 0) is On
+
+*Set one outlet on/off:*
+
+    pwrusb setone 3 0
+    
+where first number is outlet number (1 2 or 3) and second is 0 for Off or 1 for On (or anything other than 0)
+
+*Read the total current draw in milliamp:*
+
+    pwrusb current
+    
+Output looks like:
+
+    Total current (milliamp) on bank 0: 40
+
+Note that will almost never be 0, even if outlets are off.
+
+Note that outlets respond & are controllable even if overall powerstrip red power switch is off.
+
+
+
+
         
 ## Additional Usage Notes
 
