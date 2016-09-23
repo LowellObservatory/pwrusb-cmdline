@@ -146,6 +146,11 @@ void status()
     printf("Outlet states on bank %d:\n\t%d  %d  %d\n", bank, outlet1, outlet2, outlet3);
 }
 
+void version()
+{
+    printf("pwrusb version is 0.1.0\n");
+}
+
 void pwrusb_info()
 {
     printf("pwrusb usage examples:\n");
@@ -167,12 +172,20 @@ void pwrusb_info()
     printf("NOTES: \n");
     printf("    - current is not 0, even when all outlets off, or power strip switch is off\n");
     printf("    - outlets respond & are controllable even if overall powerstrip red power switch is off\n");
+    printf("----\n");
+    version();
 }
 
 int main(int argc, char* argv[])
 {
     int outlet1, outlet2, outlet3, outletnum;
     int bank=0;
+    
+    if (argc == 2 && strcmp(argv[1], "version") == 0)
+    {
+        version();
+        return 0;
+    }
     
     if (get_number_of_strips_attached() <= 0)
     {
