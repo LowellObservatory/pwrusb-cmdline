@@ -1,13 +1,12 @@
 
-# TODO: add "install" command
-
-all:   _pwrusb_swig_interface.so
-	echo "Make all successfully made _pwrusb_swig_interface.so"
+default: compile
+	echo "default in Makefile for pwrusb is to compile, but not install"
+	echo "...compiling..."
 	
 Mac.zip:
-# TODO: switch back to pulling with curl versus the local copy for saving time during development
-# 	curl -O http://www.pwrusb.com/downloads/Mac.zip
-	cp ../pwrusb/Mac.zip .
+# can switch back-and-forth to pulling with curl versus the local copy for saving time during development
+	curl -O http://www.pwrusb.com/downloads/Mac.zip
+# 	cp ../pwrusb/Mac.zip .
 	
 libpowerusb.dylib:	Mac.zip
 	unzip -oq Mac.zip
@@ -24,41 +23,23 @@ PwrUSBImp.h:  Mac.zip
 _PwrUsbCmd.cpp:	 PwrUsbCmd.cpp
 	sed -e 's/".\/libpowerusb.dylib"/"libpowerusb.dylib"/g' PwrUsbCmd.cpp | sed -e 's/int main/int OldUnusedMain/g' > _PwrUsbCmd.cpp
 
-pwrusb-test:   _PwrUsbCmd.cpp  PwrUSBImp.h  libpowerusb.dylib  pwrusb-test.cpp
-	g++ -fPIC -g -c pwrusb-test.cpp
-	g++ pwrusb-test.o -g -framework IOKit -framework CoreFoundation -o pwrusb-test
+pwrusb:   _PwrUsbCmd.cpp  PwrUSBImp.h  libpowerusb.dylib  pwrusb-cmdline.cpp
+	g++ -fPIC -g -c pwrusb-cmdline.cpp
+	g++ pwrusb-cmdline.o -g -framework IOKit -framework CoreFoundation -o pwrusb
 
+compile:  pwrusb
+	echo "compiling pwrusb"
 
-
-# TODO below this line needs to be parsed/discarded
-
-
-
-PwrUsbCmd_interface.cpp:  PwrUsbCmd_interface-without-version.cpp  __about__.py
-	sed -e 's/ABC-version-XYZ/$(VERSION)/g' PwrUsbCmd_interface-without-version.cpp > PwrUsbCmd_interface.cpp
-
-_pwrusb_swig_interface.so:	 PwrUsbCmd_interface.cpp  PwrUsbCmd_interface.i	 _PwrUsbCmd.cpp	 libpowerusb.dylib	PwrUSBImp.h
-	swig -c++ -python -o PwrUsbCmd_interface_wrap.cpp PwrUsbCmd_interface.i
-	g++ -fPIC -g -c PwrUsbCmd_interface.cpp
-	g++ -fPIC -Wall -g -c PwrUsbCmd_interface_wrap.cpp -I$(PYMOD_INC)
-	ld -bundle -flat_namespace -macosx_version_min 10.7 -undefined suppress -lusb-1.0 -L./ -lpowerusb -o _pwrusb_swig_interface.so PwrUsbCmd_interface.o PwrUsbCmd_interface_wrap.o
-	install_name_tool -change libpowerusb.dylib $(PYSITE_PACKAGES)/libpowerusb.dylib _pwrusb_swig_interface.so
-
-
-# TODO: clean up the clean command
-
+install:  compile
+	mv -f pwrusb /usr/local/bin/.
+	mv -f libpowerusb.dylib /usr/local/lib/.
+	
 clean:
-	rm -f PwrUsbCmd_interface.cpp
 	rm -f _PwrUsbCmd.cpp
 	rm -f *.o
 	rm -f *.so
-	rm -f *.pyc
-	rm -f PwrUsbCmd_interface_wrap.cpp
-	rm -f pwrusb_swig_interface.py
 	rm -rf Mac
 	rm -f libpowerusb.dylib
 	rm -f PwrUsbCmd.cpp
 	rm -f PwrUSBImp.h
-	rm -rf build
-	rm -rf __pycache__
 	rm -f Mac.zip
