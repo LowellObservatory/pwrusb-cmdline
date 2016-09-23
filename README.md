@@ -65,7 +65,7 @@ Output looks like:
 
     Total current (milliamp) on bank 0: 40
 
-Note that will almost never be 0, even if outlets are off.
+Note that current draw will almost never be 0, even if outlets are off.
 
 Note that outlets respond & are controllable even if overall powerstrip red power switch is off.
 
